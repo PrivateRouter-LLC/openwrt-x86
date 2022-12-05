@@ -1,0 +1,14 @@
+version: '3'
+
+volumes:
+  homeassistant_config:
+
+services:
+  homeassistant:
+    restart: unless-stopped
+    network_mode: "host" 
+    image: lscr.io/linuxserver/homeassistant
+    volumes:
+      - ./data:/config
+    ports:
+      - 8123:8123

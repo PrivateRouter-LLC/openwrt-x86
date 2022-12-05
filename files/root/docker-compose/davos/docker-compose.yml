@@ -1,0 +1,14 @@
+version: "2.1"
+services:
+  davos:
+    image: lscr.io/linuxserver/davos:latest
+    container_name: davos
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - ./config:/config
+      - ./downloads:/download
+    ports:
+      - 8789:8080
+    restart: unless-stopped

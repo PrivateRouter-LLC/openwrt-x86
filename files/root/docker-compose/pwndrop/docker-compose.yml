@@ -1,0 +1,15 @@
+version: '3'
+
+volumes:
+  pwndrop_config:
+  
+services:
+  pwndrop:
+    restart: unless-stopped
+    image: lscr.io/linuxserver/pwndrop
+    environment:
+      - SECRET_PATH=/pwndrop
+    volumes:
+      - ./config:/config
+    ports:
+      - 8110:8080

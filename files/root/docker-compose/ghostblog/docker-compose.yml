@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  ghostblog:
+    restart: unless-stopped
+    image: ghost
+    environment:
+      - NODE_ENV=development
+      - url=http://${LAN_IP}:3001
+    ports:
+      - 3001:2368

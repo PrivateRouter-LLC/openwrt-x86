@@ -1,0 +1,12 @@
+version: "3.2"
+services:
+  picoshare:
+    image: mtlynch/picoshare
+    environment:
+      - PORT=3001
+      - PS_SHARED_SECRET=${GEN_PASS} # Change to any password
+    ports:
+      - 3001:3001
+    command: -db /data/store.db
+    volumes:
+      - ./data:/data

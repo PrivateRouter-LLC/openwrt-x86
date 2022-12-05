@@ -1,0 +1,20 @@
+version: "3"
+services:
+  frpc:
+    image: privaterouterllc/frpc
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      # These are required to run
+      FRPC_TOKEN: "YOUR_REVERSE_PROXY_TOKEN"
+      FRPC_IP: "YOUR_REVERSE_PROXY_IP"
+      FRPC_PORT: "7000" # This is optional
+      # Required Minimum Format: service_name,service_protocol,service_port
+      # Optional Format: service_name,service_protocol,local_service_port,remote_service_port
+      # Optional Format: service_name,service_protocol,local_service_port,remote_service_port,local_service_ip
+      # Each service must be separated by a space
+      FRPC_SERVICES: "http,tcp,8080,80,192.168.0.1 https,tcp,4443,443,192.168.0.1 wireguard,udp,51820,51820,192.168.0.1"
+    volumes:
+      # This is optional, you can put custom ini files here for frpc to load
+      - "./frpc:/frpc/"
+

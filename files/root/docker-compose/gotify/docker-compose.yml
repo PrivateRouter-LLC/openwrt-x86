@@ -1,0 +1,13 @@
+version: "3"
+services:
+  app:
+    image: gotify/server
+    container_name: gotify
+    restart: unless-stopped
+    ports:
+      - ${LAN_IP}:8050:80
+    environment:
+      - TZ='Africa/Casablanca'
+    volumes:
+      - ./data:/app/data
+

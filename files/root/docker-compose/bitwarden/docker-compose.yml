@@ -1,0 +1,13 @@
+version: '3'
+
+volumes:
+  bitwarden_config:
+
+services:
+  bitwarden:
+    restart: unless-stopped
+    image: vaultwarden/server
+    volumes:
+      - ./bitwarden_config:/data
+    ports:
+      - 5180:80

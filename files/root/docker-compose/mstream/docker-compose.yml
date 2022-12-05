@@ -1,0 +1,15 @@
+version: '3'
+
+volumes:
+  mstream_config:
+  msteam_music:
+  
+services:
+  mstream:
+    restart: unless-stopped
+    image: lscr.io/linuxserver/mstream
+    volumes:
+      - ./config:/config
+      - ./music:/music
+    ports:
+      - 3300:3000

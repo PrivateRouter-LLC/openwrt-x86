@@ -1,0 +1,16 @@
+version: "2.1"
+services:
+  papermerge:
+    image: lscr.io/linuxserver/papermerge:latest
+    container_name: papermerge
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+      - REDIS_URL=${LAN_IP} #optional
+    volumes:
+      - ./appdata/config:/config
+      - ./appdata/data:/data
+    ports:
+      - 8681:8000
+    restart: unless-stopped

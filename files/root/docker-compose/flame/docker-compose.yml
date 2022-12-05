@@ -1,0 +1,12 @@
+version: '2.1'
+services:
+  flame:
+    image: pawelmalak/flame:latest
+    container_name: flame
+    volumes:
+      - ./data:/app/data
+    ports:
+      - 5005:5005
+    environment:
+      - PASSWORD=password
+    restart: unless-stopped

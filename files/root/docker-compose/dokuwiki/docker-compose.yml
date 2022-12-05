@@ -1,0 +1,12 @@
+version: '2'
+services:
+  dokuwiki:
+    image: docker.io/bitnami/dokuwiki:20220731
+    ports:
+      - '88:8080'
+      - '444:8443'
+    volumes:
+      - 'dokuwiki_data:/bitnami/dokuwiki'
+volumes:
+  dokuwiki_data:
+    driver: local

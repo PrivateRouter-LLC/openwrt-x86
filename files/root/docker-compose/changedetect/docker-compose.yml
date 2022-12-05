@@ -1,0 +1,15 @@
+version: "2.1"
+services:
+  changedetection:
+    image: lscr.io/linuxserver/changedetection.io:latest
+    container_name: changedetection
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - BASE_URL=http://${LAN_IP}:5681 #optional
+    volumes:
+      - ./appdata/config:/config
+    ports:
+      - 5681:5000
+    restart: unless-stopped

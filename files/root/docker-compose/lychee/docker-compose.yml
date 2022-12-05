@@ -1,0 +1,36 @@
+version: "3"
+services:
+  mariadb:
+    image: lscr.io/linuxserver/mariadb:latest
+    container_name: lychee_mariadb
+    restart: always
+    volumes:
+      - ./mariadb/data:/config
+    environment:
+      - MYSQL_ROOT_PASSWORD=${GEN_PASS}
+      - MYSQL_DATABASE=lychee
+      - MYSQL_USER=lychee
+      - MYSQL_PASSWORD=${GEN_PASS}
+      - PGID=1000
+      - PUID=1000
+      - TZ=Europe/London
+  lychee:
+    image: lscr.io/linuxserver/lychee:latest
+    container_name: lychee
+    restart: always
+    depends_on:
+      - mariadb
+    volumes:
+      - ./config:/config
+      - ./pictures:/pictures
+    environment:
+      - DB_HOST=mariadb
+      - DB_USERNAME=lychee
+      - DB_PASSWORD=${GEN_PASS}
+      - DB_DATABASE=lychee
+      - DB_PORT=3306
+      - PGID=1000
+      - PUID=1000
+      - TZ=Europe/London
+    ports:
+      - 8833:80

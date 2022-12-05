@@ -1,0 +1,8 @@
+version: "2.1"
+services:
+  nano-wallet:
+    image: lscr.io/linuxserver/nano-wallet:latest
+    container_name: nano-wallet
+    ports:
+      - 85:80
+    restart: unless-stopped

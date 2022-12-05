@@ -1,0 +1,15 @@
+version: "2.1"
+services:
+  budge:
+    image: lscr.io/linuxserver/budge:latest
+    container_name: budge
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - ./config:/config
+    ports:
+      - 89:80
+      - 449:443
+    restart: unless-stopped

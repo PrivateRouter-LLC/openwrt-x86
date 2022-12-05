@@ -1,0 +1,13 @@
+version: '3.3'
+services:
+    coturn:
+        enviroment:
+            - external-ip='$(detect-external-ip)'
+            - relay-ip='$(detect-external-ip)'
+        ports:
+            - '3478:3478'
+            - '3478:3478/udp'
+            - '5349:5349'
+            - '5349:5349/udp'
+            - '49160-49200:49160-49200/udp'
+        image: coturn/coturn

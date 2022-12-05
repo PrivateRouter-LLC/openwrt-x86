@@ -1,0 +1,22 @@
+version: '3.3'
+
+services:
+  app:
+    image: epenguincom/nitter:latest
+    container_name: nitter
+    restart: always
+    depends_on:
+      - redis
+    volumes:
+      - ./data/nitter:/data
+    ports:
+      - "${LAN_IP}:8023:8080"
+    environment:
+      - REDIS_HOST="redis"
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: always
+    volumes:
+      - ./data/redis:/data

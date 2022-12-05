@@ -1,0 +1,14 @@
+version: "2.1"
+services:
+  filezilla:
+    image: lscr.io/linuxserver/filezilla:latest
+    container_name: filezilla
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - ./config:/config
+    ports:
+      - 3986:3000
+    restart: unless-stopped

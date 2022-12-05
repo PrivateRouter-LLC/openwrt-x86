@@ -1,0 +1,17 @@
+version: "2.1"
+services:
+  pixapop:
+    image: lscr.io/linuxserver/pixapop:latest
+    container_name: pixapop
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - APP_USERNAME=admin #optional
+      - APP_PASSWORD=admin #optional
+    volumes:
+      - ./config:/config
+      - ./photos:/photos
+    ports:
+      - 86:80
+    restart: unless-stopped

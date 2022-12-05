@@ -1,0 +1,42 @@
+version: '2'
+services:
+  mariadb:
+    image: docker.io/bitnami/mariadb:10.6
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=no
+      - PRESTASHOP_DATABASE_HOST=mariadb
+      - PRESTASHOP_DATABASE_PORT_NUMBER=3306
+      - PRESTASHOP_DATABASE_USER=bn_prestashop
+      - PRESTASHOP_DATABASE_NAME=bitnami_prestashop
+      - PRESTASHOP_DATABASE_PASSWORD=${GEN_PASS}
+      - MARIADB_USER=bn_prestashop
+      - MARIADB_DATABASE=bitnami_prestashop
+      - MARIADB_PASSWORD=${GEN_PASS}
+      - MARIADB_ROOT_PASSWORD=${GEN_PASS2}
+    volumes:
+      - 'mariadb_data:/bitnami/mariadb'
+  prestashop:
+    image: docker.io/bitnami/prestashop:1.7
+    ports:
+      - '86:8080'
+      - '444:8443'
+    environment:
+      - PRESTASHOP_HOST=${LAN_IP}:86
+      - PRESTASHOP_PASSWORD=password
+      - PRESTASHOP_DATABASE_HOST=mariadb
+      - PRESTASHOP_DATABASE_PORT_NUMBER=3306
+      - PRESTASHOP_DATABASE_USER=bn_prestashop
+      - PRESTASHOP_DATABASE_NAME=bitnami_prestashop
+      - PRESTASHOP_DATABASE_PASSWORD=${GEN_PASS}
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=no
+    volumes:
+      - 'prestashop_data:/bitnami/prestashop'
+    depends_on:
+      - mariadb
+volumes:
+  mariadb_data:
+    driver: local
+  prestashop_data:
+    driver: local

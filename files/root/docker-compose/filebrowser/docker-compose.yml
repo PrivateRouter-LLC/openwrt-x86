@@ -1,0 +1,17 @@
+version: '3'
+
+volumes:
+  filebrowser_config:
+  filebrowser_data:
+
+services:
+  filebrowser:
+    restart: unless-stopped
+    image: hurlenko/filebrowser
+    volumes:
+      - ./config:/config
+      - /opt/docker-compose:/data
+    environment:
+      - FB_BASEURL=/filebrowser
+    ports:
+      - 8984:8080

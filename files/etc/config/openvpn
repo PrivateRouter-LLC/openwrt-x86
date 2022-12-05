@@ -1,0 +1,174 @@
+config openvpn 'TGUserPassSetup'
+	option config '/etc/openvpn/TGUserPassSetup.ovpn'
+
+config openvpn 'TorGuard_Australia'
+	option config '/etc/openvpn/TorGuard_Australia.ovpn'
+
+config openvpn 'TorGuard_Austria'
+	option config '/etc/openvpn/TorGuard_Austria.ovpn'
+
+config openvpn 'TorGuard_Belgium'
+	option config '/etc/openvpn/TorGuard_Belgium.ovpn'
+
+config openvpn 'TorGuard_Brazil'
+	option config '/etc/openvpn/TorGuard_Brazil.ovpn'
+
+config openvpn 'TorGuard_Bulgaria'
+	option config '/etc/openvpn/TorGuard_Bulgaria.ovpn'
+
+config openvpn 'TorGuard_CA_Toronto'
+	option config '/etc/openvpn/TorGuard_CA_Toronto.ovpn'
+
+config openvpn 'TorGuard_CA_VC'
+	option config '/etc/openvpn/TorGuard_CA_VC.ovpn'
+
+config openvpn 'TorGuard_Chile'
+	option config '/etc/openvpn/TorGuard_Chile.ovpn'
+
+config openvpn 'TorGuard_Czech'
+	option config '/etc/openvpn/TorGuard_Czech.ovpn'
+
+config openvpn 'TorGuard_Denmark'
+	option config '/etc/openvpn/TorGuard_Denmark.ovpn'
+
+config openvpn 'TorGuard_Finland'
+	option config '/etc/openvpn/TorGuard_Finland.ovpn'
+
+config openvpn 'TorGuard_France'
+	option config '/etc/openvpn/TorGuard_France.ovpn'
+
+config openvpn 'TorGuard_Germany'
+	option config '/etc/openvpn/TorGuard_Germany.ovpn'
+
+config openvpn 'TorGuard_Greece'
+	option config '/etc/openvpn/TorGuard_Greece.ovpn'
+
+config openvpn 'TorGuard_Hong_Kong'
+	option config '/etc/openvpn/TorGuard_Hong_Kong.ovpn'
+
+config openvpn 'TorGuard_Hungary'
+	option config '/etc/openvpn/TorGuard_Hungary.ovpn'
+
+config openvpn 'TorGuard_Iceland'
+	option config '/etc/openvpn/TorGuard_Iceland.ovpn'
+
+config openvpn 'TorGuard_Ireland'
+	option config '/etc/openvpn/TorGuard_Ireland.ovpn'
+	
+config openvpn 'TorGuard_Indonesia'
+	option config '/etc/openvpn/TorGuard_Indonesia.ovpn'
+
+config openvpn 'TorGuard_Israel'
+	option config '/etc/openvpn/TorGuard_Israel.ovpn'
+
+config openvpn 'TorGuard_Italy'
+	option config '/etc/openvpn/TorGuard_Italy.ovpn'
+
+config openvpn 'TorGuard_Japan'
+	option config '/etc/openvpn/TorGuard_Japan.ovpn'
+
+config openvpn 'TorGuard_Luxembourg'
+	option config '/etc/openvpn/TorGuard_Luxembourg.ovpn'
+
+config openvpn 'TorGuard_Mexico'
+	option config '/etc/openvpn/TorGuard_Mexico.ovpn'
+
+config openvpn 'TorGuard_Moldova'
+	option config '/etc/openvpn/TorGuard_Moldova.ovpn'
+
+config openvpn 'TorGuard_Netherlands'
+	option config '/etc/openvpn/TorGuard_Netherlands.ovpn'
+
+config openvpn 'TorGuard_New_Zealand'
+	option config '/etc/openvpn/TorGuard_New_Zealand.ovpn'
+
+config openvpn 'TorGuard_Norway'
+	option config '/etc/openvpn/TorGuard_Norway.ovpn'
+
+config openvpn 'TorGuard_Poland'
+	option config '/etc/openvpn/TorGuard_Poland.ovpn'
+
+config openvpn 'TorGuard_Portugal'
+	option config '/etc/openvpn/TorGuard_Portugal.ovpn'
+
+config openvpn 'TorGuard_Romania'
+	option config '/etc/openvpn/TorGuard_Romania.ovpn'
+	
+config openvpn 'TorGuard_Russia'
+	option config '/etc/openvpn/TorGuard_Russia.ovpn'
+
+config openvpn 'TorGuard_Singapore'
+	option config '/etc/openvpn/TorGuard_Singapore.ovpn'
+
+config openvpn 'TorGuard_Slovakia'
+	option config '/etc/openvpn/TorGuard_Slovakia.ovpn'
+
+config openvpn 'TorGuard_South_Korea'
+	option config '/etc/openvpn/TorGuard_South_Korea.ovpn'
+	
+config openvpn 'TorGuard_South_Africa'
+	option config '/etc/openvpn/TorGuard_South_Africa.ovpn'
+
+config openvpn 'TorGuard_Spain'
+	option config '/etc/openvpn/TorGuard_Spain.ovpn'
+
+config openvpn 'TorGuard_Sweden'
+	option config '/etc/openvpn/TorGuard_Sweden.ovpn'
+
+config openvpn 'TorGuard_Switzerland'
+	option config '/etc/openvpn/TorGuard_Switzerland.ovpn'
+
+config openvpn 'TorGuard_Taiwan'
+	option config '/etc/openvpn/TorGuard_Taiwan.ovpn'
+	
+config openvpn 'TorGuard_Turkey'
+	option config '/etc/openvpn/TorGuard_Turkey.ovpn'
+
+config openvpn 'TorGuard_Thailand'
+	option config '/etc/openvpn/TorGuard_Thailand.ovpn'
+
+config openvpn 'TorGuard_UK_London'
+	option config '/etc/openvpn/TorGuard_UK_London.ovpn'
+	
+config openvpn 'TorGuard_Ukraine'
+	option config '/etc/openvpn/TorGuard_Ukraine.ovpn'
+	
+config openvpn 'TorGuard_UAE'
+	option config '/etc/openvpn/TorGuard_UAE.ovpn'
+	
+config openvpn 'TorGuard_UK_Manchester'
+	option config '/etc/openvpn/TorGuard_UK_Manchester.ovpn'
+
+config openvpn 'TorGuard_USA_Atlanta'
+	option config '/etc/openvpn/TorGuard_USA_Atlanta.ovpn'
+
+config openvpn 'TorGuard_USA_Chicago'
+	option config '/etc/openvpn/TorGuard_USA_Chicago.ovpn'
+
+config openvpn 'TorGuard_USA_Dallas'
+	option config '/etc/openvpn/TorGuard_USA_Dallas.ovpn'
+
+config openvpn 'TorGuard_USA_LAX'
+	option config '/etc/openvpn/TorGuard_USA_LAX.ovpn'
+
+config openvpn 'TorGuard_USA_Miami'
+	option config '/etc/openvpn/TorGuard_USA_Miami.ovpn'
+	
+config openvpn 'TorGuard_USA_Vegas'
+	option config '/etc/openvpn/TorGuard_USA_Vegas.ovpn'
+
+config openvpn 'TorGuard_USA_NJ'
+	option config '/etc/openvpn/TorGuard_USA_NJ.ovpn'
+
+config openvpn 'TorGuard_USA_NYC'
+	option config '/etc/openvpn/TorGuard_USA_NYC.ovpn'
+
+config openvpn 'TorGuard_USA_SanFran'
+	option config '/etc/openvpn/TorGuard_USA_SanFran.ovpn'
+
+config openvpn 'TorGuard_USA_Seattle'
+	option config '/etc/openvpn/TorGuard_USA_Seattle.ovpn'
+	
+config openvpn 'TorGuard_USA_Seattle'
+	option config '/etc/openvpn/TorGuard_Salt_Lake_City.ovpn'
+

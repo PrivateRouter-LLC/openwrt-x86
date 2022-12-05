@@ -1,0 +1,7 @@
+
+config smartdns
+	option enabled '0'
+	list old_redirect 'none'
+	list old_port '6053'
+	list old_enabled '0'
+

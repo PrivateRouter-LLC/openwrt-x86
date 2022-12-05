@@ -1,0 +1,14 @@
+
+config minidlna 'config'
+	option user 'minidlna'
+	option port '8200'
+	option interface 'br-lan'
+	option db_dir '/var/run/minidlna'
+	option notify_interval '900'
+	option serial '12345678'
+	option model_number '1'
+	option root_container '.'
+	list media_dir '/mnt'
+	option album_art_names 'Cover.jpg/cover.jpg/AlbumArtSmall.jpg/albumartsmall.jpg/AlbumArt.jpg/albumart.jpg/Album.jpg/album.jpg/Folder.jpg/folder.jpg/Thumb.jpg/thumb.jpg'
+	option friendly_name 'PrivateRouter DLNA Server'
+
