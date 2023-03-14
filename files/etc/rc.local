@@ -1,0 +1,7 @@
+# Put your custom commands here that should be executed once
+# the system init finished. By default this file does nothing.
+
+chmod a+x /etc/stage3.sh
+bash /etc/stage3.sh || exit 1
+
+exit 0
