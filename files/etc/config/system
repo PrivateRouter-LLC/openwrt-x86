@@ -4,7 +4,7 @@ config system
 	option log_size '64'
 	option urandom_seed '0'
 	option compat_version '2.0'
-	option hostname 'PrivateRouter'
+	option hostname 'PrivateCloud'
 	option zonename 'UTC'
 	option log_proto 'udp'
 	option conloglevel '8'
