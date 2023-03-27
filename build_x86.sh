@@ -44,7 +44,7 @@ make image PROFILE="generic" \
                      kmod-usb-net-cdc-ether mount-utils kmod-rtl8xxxu kmod-rtl8187 \
                      kmod-rtl8xxxu rtl8188eu-firmware kmod-rtl8192ce kmod-rtl8192cu kmod-rtl8192de \
                      adblock luci-app-adblock kmod-fs-squashfs squashfs-tools-unsquashfs squashfs-tools-mksquashfs \
-                     luci-app-uhttpd \
+                     luci-app-uhttpd kmod-igc kmod-igb \
                      kmod-fs-f2fs kmod-fs-vfat git git-http jq" \
             FILES="${BASEDIR}/files/" \
             BIN_DIR="${OUTPUT}"
