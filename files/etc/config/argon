@@ -8,5 +8,5 @@ config global
 	option transparency_dark '0.5'
 	option bing_background '0'
 	option save 'Save Changes'
-	option mode 'dark'
+	option mode 'light'
 
