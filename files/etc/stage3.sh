@@ -60,5 +60,8 @@ log_say "Running our rc.custom startup script"
 bash /etc/rc.custom
 log_say "We are done with our first boot and should be setup to run correctly!"
 
+# Add appstore
+opkg install /etc/tgappstore_3.0.0-6_all.ipk
+
 # We are done, remove ourself by script name
 rm -- "$0"
