@@ -1,7 +1,7 @@
 #!/bin/bash
 
 OUTPUT="$(pwd)/images"
-BUILD_VERSION="21.02.3"
+BUILD_VERSION="22.03.1"
 BUILDER="https://downloads.openwrt.org/releases/${BUILD_VERSION}/targets/x86/64/openwrt-imagebuilder-${BUILD_VERSION}-x86-64.Linux-x86_64.tar.xz"
 KERNEL_PARTSIZE=200 #Kernel-Partitionsize in MB
 ROOTFS_PARTSIZE=3096 #Rootfs-Partitionsize in MB
@@ -44,7 +44,7 @@ make image PROFILE="generic" \
                      kmod-usb-net-cdc-ether mount-utils kmod-rtl8xxxu kmod-rtl8187 \
                      kmod-rtl8xxxu rtl8188eu-firmware kmod-rtl8192ce kmod-rtl8192cu kmod-rtl8192de \
                      adblock luci-app-adblock kmod-fs-squashfs squashfs-tools-unsquashfs squashfs-tools-mksquashfs \
-                     luci-app-uhttpd kmod-igc kmod-igb \
+                     luci-app-uhttpd kmod-igc kmod-igb kmod-veth uxc procd-ujail procd-ujail-console \
                      kmod-fs-f2fs kmod-fs-vfat git git-http jq" \
             FILES="${BASEDIR}/files/" \
             BIN_DIR="${OUTPUT}"
