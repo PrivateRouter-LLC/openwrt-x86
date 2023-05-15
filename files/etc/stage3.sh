@@ -53,15 +53,9 @@ log_say "Downloading startup.tar.gz"
 wget -q -O /tmp/startup.tar.gz https://github.com/PrivateRouter-LLC/script-repo/raw/main/startup-scripts/startup.tar.gz
 log_say "Extracting startup.tar.gz"
 tar -xzf /tmp/startup.tar.gz -C /etc
-log_say "Enabling our rc.custom startup script"
-/etc/init.d/custom disable
-/etc/init.d/custom enable
-log_say "Running our rc.custom startup script"
-bash /etc/rc.custom
-log_say "We are done with our first boot and should be setup to run correctly!"
 
-# Add appstore
-opkg install /etc/tgappstore_3.0.0-6_all.ipk
+log_say "Removing our script before reboot"
+rm "$0"
 
-# We are done, remove ourself by script name
-rm -- "$0"
+log_say "Reboot to uptake our rc.custom boot script"
+reboot
