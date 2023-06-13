@@ -1,17 +1,12 @@
 #!/usr/bin/env bash
 # Stage 3 booster to prepare router for first real boot
 
-# Verify we are connected to the Internet
-is_connected() {
-    ping -q -c3 1.1.1.1 >/dev/null 2>&1
-    return $?
-}
-
 # Log to the system log and echo if needed
 log_say()
 {
-    echo "${1}"
-    logger "${1}"
+    SCRIPT_NAME=$(basename "$0")
+    echo "${SCRIPT_NAME}: ${1}"
+    logger "${SCRIPT_NAME}: ${1}"
 }
 
 log_say "                                                                      "
@@ -34,15 +29,29 @@ log_say " ░███    ░███ ░███ ░███ ░███ �
 log_say " █████   █████░░██████  ░░████████  ░░█████ ░░██████  █████           "
 log_say "░░░░░   ░░░░░  ░░░░░░    ░░░░░░░░    ░░░░░   ░░░░░░  ░░░░░            "
 
-# Set our router's dns
-echo "nameserver 1.1.1.1" > /etc/resolv.conf
+# Command to wait for Internet connection
+wait_for_internet() {
+    while ! ping -q -c3 1.1.1.1 >/dev/null 2>&1; do
+        log_say "Waiting for Internet connection..."
+        sleep 1
+    done
+    log_say "Internet connection established"
+}
 
-# Check and wait for Internet connection
-while ! is_connected; do
-    log_say "Waiting for Internet connection..."
+# Wait for Internet connection
+wait_for_internet
+
+# Command to wait for opkg to finish
+wait_for_opkg() {
+  while pgrep -x opkg >/dev/null; do
+    log_say "Waiting for opkg to finish..."
     sleep 1
-done
-log_say "Internet connection established"
+  done
+  log_say "opkg is released, our turn!"
+}
+
+# Wait for opkg to finish
+wait_for_opkg
 
 # Cleanup our auto-provision and prepare for first real boot
 [ -d /etc/auto-provision ] && rm -rf /etc/auto-provision
@@ -55,7 +64,7 @@ log_say "Extracting startup.tar.gz"
 tar -xzf /tmp/startup.tar.gz -C /etc
 
 log_say "Removing our script before reboot"
-rm "$0"
+rm -- "$0"
 
 log_say "Reboot to uptake our rc.custom boot script"
 reboot

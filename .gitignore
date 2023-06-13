@@ -1,2 +1,8 @@
+
+# macOS
+.DS_Store
+._*
+
+# General
 /openwrt-imagebuilder*
 /images

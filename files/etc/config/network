@@ -20,10 +20,6 @@ config interface 'lan'
 	option netmask '255.255.255.0'
 	option ip6assign '60'
 
-config interface 'wan'
-	option device 'eth1'
-	option proto 'dhcp'
-
 config interface 'wan6'
 	option device 'eth1'
 	option proto 'dhcpv6'
@@ -37,17 +33,24 @@ config device
 	option type 'bridge'
 	option name 'docker0'
 
+config interface 'TorGuard'
+	option proto 'none'
+	option device 'tun0'
+
 config interface 'wg'
 	option proto 'wireguard'
-	list addresses '0.0.0.0'
+	option private_key 'private_key'
+	list addresses '0.0.0.0/16'
 
 config wireguard_wg
+	option public_key 'public_key'
 	list allowed_ips '0.0.0.0/0'
 	list allowed_ips '::/0'
 	option route_allowed_ips '1'
 	option endpoint_host '0.0.0.0'
+	option endpoint_port '00000'
 	option persistent_keepalive '25'
 
-config interface 'TorGuard'
-	option proto 'none'
-	option device 'tun0'
+config interface 'wan'
+	option device 'eth1'
+	option proto 'dhcp'

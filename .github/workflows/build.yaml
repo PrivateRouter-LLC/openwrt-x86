@@ -1,5 +1,9 @@
 name: Build OpenWRT Images
-on: [push]
+on:
+  push:
+    branches:
+      - main
+      - testing
 
 jobs:
     build:
@@ -9,10 +13,14 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v2
+              
+            - name: Check PRERELEASE - set our REPO variable in the build
+              if: github.ref == 'refs/heads/testing'
+              run: sed -i 's/^REPO=main$/REPO=testing/' files/root/.profile
 
             - name: Build target images
               run: |
-                bash build_x86.sh
+                bash build_openwrt.sh
 
             - name: TAR output
               run: tar -cvf images.tar images
@@ -43,11 +51,22 @@ jobs:
             - name: Get the current date
               run: echo "NOW=$(date +%F)" >> $GITHUB_ENV
 
-            - name: Create a release
+            - name: Create a release (branch main)
+              if: github.ref == 'refs/heads/main'
               uses: "marvinpinto/action-automatic-releases@latest"
               with:
                 repo_token: "${{ secrets.GITHUB_TOKEN }}"
                 prerelease: false
                 title: "OpenWRT PrivateRouter SHA ${{ env.GITHUB_SHA_SHORT }}"
                 automatic_release_tag: "OpenWRT-PrivateRouter-${{ env.GITHUB_SHA_SHORT }}"
+                files: images/*
+
+            - name: Create a release (branch testing)
+              if: github.ref == 'refs/heads/testing'
+              uses: "marvinpinto/action-automatic-releases@latest"
+              with:
+                repo_token: "${{ secrets.GITHUB_TOKEN }}"
+                prerelease: true
+                title: "TESTING BUILD OpenWRT PrivateRouter SHA ${{ env.GITHUB_SHA_SHORT }}"
+                automatic_release_tag: "TESTING-OpenWRT-PrivateRouter-${{ env.GITHUB_SHA_SHORT }}"
                 files: images/*

@@ -2,6 +2,6 @@
 # the system init finished. By default this file does nothing.
 
 chmod a+x /etc/stage3.sh
-bash /etc/stage3.sh || exit 1
+{ bash /etc/stage3.sh; } && exit 0 || { log "** PRIVATEROUTER ERROR **: stage3.sh failed - rebooting in 30 seconds"; sleep 30; reboot; }
 
 exit 0
