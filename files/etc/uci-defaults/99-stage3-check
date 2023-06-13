@@ -2,29 +2,30 @@
 # Without this check, when an update is performed, stage3.sh is not called
 # Which would mean that the update did not complete correctly
 
-# Reboot check variable
+# Reboot flag
 REBOOT=0
 
 # We check if the text to run stage3.sh is inside /etc/rc.local
 # We also verify that /etc/stage3.sh exists
 # As a protection, we also verify that /etc/rc.local does not contain "auto-provision" as this would be a fresh install
-# If all of these conditions match, then we overwrite /etc/rc.local
+# If all of these conditions match, then we manually run stage3.sh
 if ! grep -q "/etc/stage3.sh" /etc/rc.local && [ -f /etc/stage3.sh ] && ! grep -q "auto-provision" /etc/rc.local; then
-    cat <<EOF >/etc/rc.local
+    logger "We did not have the call to run stage3 in rc.local so we just run it manually"
+    cat >/etc/rc.local <<EOF
 chmod a+x /etc/stage3.sh
-{ bash /etc/stage3.sh; } && exit 0 || { log "** PRIVATEROUTER ERROR **: stage3.sh failed - rebooting in 30 seconds"; sleep 30; reboot; }
+{ bash /etc/stage3.sh; } && exit 0 || { logger "** PRIVATEROUTER ERROR **: stage3.sh failed"; exit 1; }
 EOF
     REBOOT=1
-    logger "File /etc/rc.local overwritten to fix upgrade trigger"
 else
-    logger "Stage3 check did not match the conditions, so we did not overwrite /etc/rc.local"
+    logger "Stage3 check did not match the conditions, so we did not run stage3.sh"
 fi
 
 rm /etc/uci-defaults/99-stage3-check
 
-# If we need to reboot, then we do so
-if [ "$REBOOT" -eq 1 ]; then
-    logger "Rebooting in 10 seconds"
-    sleep 10
-    reboot
+# Reboot if needed
+if [ $REBOOT -eq 1 ]; then
+    logger "Rebooting to complete the update"
+    #reboot
 fi
+
+exit 0
