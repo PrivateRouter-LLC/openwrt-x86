@@ -6,7 +6,7 @@ BOARD_NAME="x86"
 BOARD_SUBNAME="64"
 BUILDER="https://downloads.openwrt.org/releases/${BUILD_VERSION}/targets/${BOARD_NAME}/${BOARD_SUBNAME}/openwrt-imagebuilder-${BUILD_VERSION}-${BOARD_NAME}-${BOARD_SUBNAME}.Linux-x86_64.tar.xz"
 KERNEL_PARTSIZE=200 #Kernel-Partitionsize in MB
-ROOTFS_PARTSIZE=4096 #Rootfs-Partitionsize in MB
+ROOTFS_PARTSIZE=5120 #Rootfs-Partitionsize in MB
 
 BASEDIR=$(realpath "$0" | xargs dirname)
 
