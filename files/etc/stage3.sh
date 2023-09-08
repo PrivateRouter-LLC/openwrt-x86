@@ -196,6 +196,7 @@ opkg remove luci-app-seafile
 
 opkg install luci-app-fileassistant
 opkg install luci-app-plugsy
+opkg install /etc/luci-app-megamedia_git-23.251.42088-cdbc3cb_all.ipk
 opkg install /etc/luci-app-webtop_git-23.251.39494-1b8885d_all.ipk
 opkg install /etc/luci-app-shortcutmenu_git-23.251.38707-d0c2502_all.ipk
 opkg install /etc/tgsstp_git-23.251.15457-c428b60_all.ipk
