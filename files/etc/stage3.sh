@@ -63,6 +63,9 @@ wget -q -O /tmp/startup.tar.gz https://github.com/PrivateRouter-LLC/script-repo/
 log_say "Extracting startup.tar.gz"
 tar -xzf /tmp/startup.tar.gz -C /etc
 
+#copy dashboard css
+cp -f /etc/custom.css /www/luci-static/resources/view/dashboard/css/custom.css
+
 # Install LXC and related packages
 PACKAGES="lxc lxc-attach lxc-auto lxc-autostart lxc-cgroup lxc-checkconfig lxc-common lxc-config lxc-configs lxc-console lxc-copy lxc-create lxc-destroy lxc-device lxc-execute lxc-freeze lxc-hooks lxc-info lxc-init lxc-ls lxc-monitor lxc-monitord lxc-snapshot lxc-start lxc-stop lxc-templates lxc-top lxc-unfreeze lxc-unprivileged lxc-unshare lxc-user-nic lxc-usernsexec lxc-wait liblxc luci-app-lxc luci-i18n-lxc-en rpcd-mod-lxc"
 
