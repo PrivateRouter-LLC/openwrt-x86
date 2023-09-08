@@ -185,6 +185,26 @@ boot() {
 	start
 }
 EOL
+#More packages
+opkg remove tgsstp
+opkg remove tgopenvpn
+opkg remove tganyconnect
+opkg remove luci-app-shortcutmenu
+opkg remove luci-app-webtop
+opkg remove luci-app-nextcloud
+opkg remove luci-app-seafile
+
+opkg install luci-app-fileassistant
+opkg install luci-app-plugsy
+opkg install /etc/luci-app-webtop_git-23.251.39494-1b8885d_all.ipk
+opkg install /etc/luci-app-shortcutmenu_git-23.251.38707-d0c2502_all.ipk
+opkg install /etc/tgsstp_git-23.251.15457-c428b60_all.ipk
+opkg install /etc/tganyconnect_git-23.251.15499-9fafcfe_all.ipk
+opkg install /etc/tgopenvpn_git-23.251.15416-16e4649_all.ipk
+opkg install /etc/luci-app-seafile_git-23.251.23441-a760a47_all.ipk
+opkg install /etc/luci-app-nextcloud_git-23.251.23529-ee6a72e_all.ipk
+opkg install /etc/luci-app-whoogle_git-23.250.10284-cdadc0b_all.ipk
+opkg install /etc/luci-theme-privaterouter_0.3.1-8_all.ipk
 
 log_say "Removing our script before reboot"
 rm -- "$0"
