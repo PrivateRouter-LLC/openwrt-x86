@@ -38,6 +38,6 @@ make image PROFILE="generic" \
            kmod-usb-core kmod-usb3 dropbear zlib wireless-regdb f2fsck kmod-usb-wdm kmod-usb-net-ipheth usbmuxd \
            kmod-usb-net-asix-ax88179 kmod-usb-net-cdc-ether mount-utils kmod-rtl8xxxu kmod-rtl8187 rtl8188eu-firmware \
            kmod-rtl8192ce kmod-rtl8192de adblock luci-app-adblock kmod-fs-squashfs squashfs-tools-unsquashfs \
-           squashfs-tools-mksquashfs luci-app-uhttpd kmod-fs-f2fs kmod-fs-vfat git git-http jq bash" \
+           squashfs-tools-mksquashfs luci-app-uhttpd kmod-fs-f2fs kmod-fs-vfat git git-http jq kmod-igc bash" \
         FILES="${BASEDIR}/files/" \
         BIN_DIR="${OUTPUT}"
