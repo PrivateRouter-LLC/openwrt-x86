@@ -29,7 +29,7 @@ sed -i "s/CONFIG_TARGET_ROOTFS_PARTSIZE=.*/CONFIG_TARGET_ROOTFS_PARTSIZE=$ROOTFS
 
 make image PROFILE="generic" \
         PACKAGES="kmod-rt2800-usb rt2800-usb-firmware kmod-rtl8192cu kmod-cfg80211 kmod-lib80211 kmod-mac80211 \
-           wpad-mesh-openssl base-files block-mount fdisk luci-app-minidlna minidlna samba4-server samba4-libs \
+           wpad base-files block-mount fdisk luci-app-minidlna minidlna samba4-server samba4-libs \
            luci-app-samba4 wireguard-tools luci-app-wireguard openvpn-openssl luci-app-openvpn watchcat \
            openssh-sftp-client luci-base luci-ssl luci-mod-admin-full luci-theme-bootstrap kmod-usb-storage kmod-usb-ohci \
            kmod-usb-uhci e2fsprogs resize2fs htop debootstrap luci-compat luci-lib-ipkg dnsmasq luci-app-ttyd irqbalance \
