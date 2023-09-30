@@ -32,7 +32,7 @@ make image PROFILE="generic" \
            wpad-mesh-openssl base-files block-mount fdisk luci-app-minidlna minidlna samba4-server samba4-libs \
            luci-app-samba4 wireguard-tools luci-app-wireguard openvpn-openssl luci-app-openvpn watchcat \
            openssh-sftp-client luci-base luci-ssl luci-mod-admin-full luci-theme-bootstrap kmod-usb-storage kmod-usb-ohci \
-           kmod-usb-uhci e2fsprogs resize2fs htop debootstrap luci-compat luci-lib-ipkg dnsmasq-full luci-app-ttyd irqbalance \
+           kmod-usb-uhci e2fsprogs resize2fs htop debootstrap luci-compat luci-lib-ipkg dnsmasq luci-app-ttyd irqbalance \
            ethtool netperf speedtest-netperf iperf3 curl wget rsync file lsof less mc tree usbutils diffutils \
            openssh-sftp-server nano kmod-fs-exfat kmod-fs-ext4 urngd usign vpn-policy-routing wg-installer-client \
            kmod-usb-core kmod-usb3 dropbear zlib wireless-regdb f2fsck kmod-usb-wdm kmod-usb-net-ipheth usbmuxd \
