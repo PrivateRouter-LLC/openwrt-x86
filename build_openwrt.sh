@@ -28,7 +28,7 @@ sed -i "s/CONFIG_TARGET_KERNEL_PARTSIZE=.*/CONFIG_TARGET_KERNEL_PARTSIZE=$KERNEL
 sed -i "s/CONFIG_TARGET_ROOTFS_PARTSIZE=.*/CONFIG_TARGET_ROOTFS_PARTSIZE=$ROOTFS_PARTSIZE/g" .config
 
 make image PROFILE="generic" \
-        PACKAGES="batctl-full wpad kmod-rt2800-usb rt2800-usb-firmware kmod-rtl8192cu kmod-cfg80211 kmod-lib80211 kmod-mac80211 \
+        PACKAGES="wpad kmod-rt2800-usb rt2800-usb-firmware kmod-rtl8192cu kmod-cfg80211 kmod-lib80211 kmod-mac80211 \
            base-files block-mount fdisk luci-app-minidlna minidlna samba4-server samba4-libs \
            luci-app-samba4 wireguard-tools luci-app-wireguard openvpn-openssl luci-app-openvpn watchcat \
            openssh-sftp-client luci-base luci-ssl luci-mod-admin-full luci-theme-bootstrap kmod-usb-storage kmod-usb-ohci \
