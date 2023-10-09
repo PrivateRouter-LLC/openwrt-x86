@@ -1,7 +1,27 @@
 # Put your custom commands here that should be executed once
 # the system init finished. By default this file does nothing.
 
-chmod a+x /etc/stage3.sh
-{ bash /etc/stage3.sh; } && exit 0 || { log "** PRIVATEROUTER ERROR **: stage3.sh failed - rebooting in 30 seconds"; sleep 30; reboot; }
+# Source our reusable functions
+if [ -f /pr-scripts/functions.sh ]; then
+    . /pr-scripts/functions.sh
+else
+    echo "ERROR: /pr-scripts/functions.sh not found!"
+    exit 1
+fi
+
+# This is a protector for flashing an upgrade, it protects core system files being overwritten as a setup
+if [ -f /root/.stage3-done ]; then
+    log_say "Setup has already been done, no need to change anything as this is probably an upgrade."
+    # Overwrite our setup rc.local with a clean one
+    if [ -f /pr-scripts/templates/rc.local.clean ]; then
+        cat </pr-scripts/templates/rc.local.clean >/etc/rc.local
+    else
+        # Just in case!
+        echo "" > /etc/rc.local
+    fi
+    exit 0
+fi
+
+sh /pr-scripts/auto-provision/stage1.sh
 
 exit 0

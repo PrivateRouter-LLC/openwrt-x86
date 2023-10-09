@@ -6,3 +6,6 @@
 # General
 /openwrt-imagebuilder*
 /images
+
+# Testing
+/ignore

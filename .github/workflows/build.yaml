@@ -2,8 +2,7 @@ name: Build OpenWRT Images
 on:
   push:
     branches:
-      - main
-      - testing
+      - '*'
 
 jobs:
     build:
@@ -14,9 +13,9 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
               
-            - name: Check PRERELEASE - set our REPO variable in the build
-              if: github.ref == 'refs/heads/testing'
-              run: sed -i 's/^REPO=main$/REPO=testing/' files/root/.profile
+            - name: Update REPO variable in .profile if branch is not main
+              if: github.ref != 'refs/heads/main'
+              run: sed -i "s/^REPO=main\$/REPO=${GITHUB_REF#refs/heads/}/" files/root/.profile
 
             - name: Build target images
               run: |
@@ -62,11 +61,11 @@ jobs:
                 files: images/*
 
             - name: Create a release (branch testing)
-              if: github.ref == 'refs/heads/testing'
+              if: github.ref != 'refs/heads/main'
               uses: "marvinpinto/action-automatic-releases@latest"
               with:
                 repo_token: "${{ secrets.GITHUB_TOKEN }}"
                 prerelease: true
-                title: "TESTING BUILD OpenWRT PrivateRouter SHA ${{ env.GITHUB_SHA_SHORT }}"
-                automatic_release_tag: "TESTING-OpenWRT-PrivateRouter-${{ env.GITHUB_SHA_SHORT }}"
+                title: "Branch ${{ env.GITHUB_REF_NAME }} - BUILD OpenWRT PrivateRouter SHA ${{ env.GITHUB_SHA_SHORT }}"
+                automatic_release_tag: "TESTING-OpenWRT-PrivateRouter-${{ env.GITHUB_SHA_SHORT }}-${{ env.GITHUB_REF_NAME }}"
                 files: images/*
