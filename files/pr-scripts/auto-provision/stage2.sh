@@ -30,6 +30,26 @@ wait_for_internet
 # This also takes care of opkg update
 base_requirements_check && log_say "Requirements check successful." || { log_say "Requirements check failed."; exit 1; }
 
+# Install our required Docker packages if they are not already installed
+PACKAGE_LIST="docker dockerd docker-compose luci-app-dockerman"
+
+count=$(echo "$PACKAGE_LIST" | wc -w)
+log_say "Packages to install: ${count}"
+
+for package in $PACKAGE_LIST; do
+    if ! opkg list-installed | grep -q "^$package -"; then
+        log_say "Installing $package..."
+        opkg install $package
+        if [ $? -eq 0 ]; then
+            log_say "$package installed successfully."
+        else
+            log_say "Failed to install $package."
+        fi
+    else
+        log_say "$package is already installed."
+    fi
+done
+
 ########################## FIX DOCKER PARTITION ##########################
 # Get the /dev/name of the filesystem we boot from
 BOOT_DEVICE=$(mount | grep '/rom' | cut -d' ' -f1 | sed 's/[0-9]*$//')
@@ -71,7 +91,7 @@ if [ "$DO_PARTITION" -eq 1 ]; then
     echo -e "n\n\n\n\nw" | fdisk $BOOT_DEVICE
 
     # Find our newest partition added
-    NEW_PARTITION=$(fdisk -l $BOOT_DEVICE | grep "^$BOOT_DEVICE" | tail -n 1 | awk '{print $1}')
+    NEW_PARTITION=$(fdisk -l $BOOT_DEVICE | awk -v device="$BOOT_DEVICE" '$0 ~ device && $0 !~ "BIOS boot" && $1 ~ device {part=$1} END {print part}')
 
     # Create our ext4 partition for docker
     yes | mkfs.ext4 $NEW_PARTITION
@@ -137,7 +157,13 @@ fi
 # Install v2raya
 log_say "Installing v2raya"
 wget -qO /tmp/luci-app-v2ray_2.0.0-1_all.ipk https://github.com/kuoruan/luci-app-v2ray/releases/download/v2.0.0-1/luci-app-v2ray_2.0.0-1_all.ipk
-opkg install /tmp/luci-app-v2ray_2.0.0-1_all.ipk
+if [ $? -eq 0 ]; then
+    log_say "v2ray downloaded, now installing."
+    opkg install /tmp/luci-app-v2ray_2.0.0-1_all.ipk
+else
+    log_say "v2ray did not download successfully."
+fi
+
 
 # Configure our PrivateRouter Wireless
 uci del wireless.default_radio0
@@ -160,6 +186,21 @@ wifi up radio0
 if [ -f /etc/config/openvpn ]; then
     cat </pr-scripts/config/openvpn >/etc/config/openvpn
 fi
+
+# Install our theme, logo and dockerman
+[ -d /pr-installers ] && {
+        #Install Argon Tankman theme
+        log_say "Installing custom Argon"
+        [ -f /pr-installers/luci-theme-argon*.ipk ] && opkg install /pr-installers/luci-theme-argon*.ipk || log_say "Failed to install luci-theme-argon*.ipk"
+        [ -f /pr-installers/luci-app-argon*.ipk ] && opkg install /pr-installers/luci-app-argon*.ipk || log_say "Failed to install /pr-installers/luci-app-argon*.ipk"
+
+        [ -f /pr-installers/logo.tar.gz ] && tar xzvf /pr-installers/logo.tar.gz -C /www/luci-static/argon/  || log_say "Failed to extract /pr-installers/logo.tar.gz"
+        [ -f /pr-installers/dockerman.tar.gz ] && tar xzvf /pr-installers/dockerman.tar.gz -C /usr/lib/lua/luci/model/cbi/dockerman/  || log_say "Failed to extract /pr-installers/dockerman.tar.gz"
+
+} || {
+        # No need to run setup script
+        log_say "Directory /pr-installers does not exist"
+}
 
 # Rewrite our rc.local to run our stage3 script
 cat << EOF > /etc/rc.local
