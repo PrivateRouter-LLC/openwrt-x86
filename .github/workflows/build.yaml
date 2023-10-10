@@ -77,6 +77,6 @@ jobs:
               with:
                 repo_token: "${{ secrets.GITHUB_TOKEN }}"
                 prerelease: true
-                title: "Branch ${{ env.GITHUB_REF_NAME }} - BUILD OpenWRT PrivateRouter SHA ${{ env.GITHUB_SHA_SHORT }}"
-                automatic_release_tag: "TESTING-OpenWRT-PrivateRouter-${{ env.GITHUB_SHA_SHORT }}-${{ env.GITHUB_REF_NAME }}"
+                title: "Test OpenWRT PrivateRouter SHA ${{ env.GITHUB_SHA_SHORT }}"
+                automatic_release_tag: "TESTING-OpenWRT-PrivateRouter-${{ env.GITHUB_SHA_SHORT }}"
                 files: images/*
