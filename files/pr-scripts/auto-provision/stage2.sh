@@ -160,7 +160,7 @@ fi
 
     # Check if /opt/docker exists, if so, move it to /opt/docker2
     # Also checks first if /opt/docker is a symbolic link
-    if [ -d /opt/docker ] && [ ! -L "/opt/docker" ]; then
+    if [ -d /opt/docker ] && [ ! -L /opt/docker ] && [ -d /opt/docker2 ]; then
         log_say "Moving /opt/docker to /opt/docker2"
         mv /opt/docker/* /opt/docker2/
         rm -rf /opt/docker
@@ -218,8 +218,16 @@ fi
         [ -f /pr-installers/logo.tar.gz ] && tar xzvf /pr-installers/logo.tar.gz -C /www/luci-static/argon/  || log_say "Failed to extract /pr-installers/logo.tar.gz"
         [ -f /pr-installers/dockerman.tar.gz ] && tar xzvf /pr-installers/dockerman.tar.gz -C /usr/lib/lua/luci/model/cbi/dockerman/  || log_say "Failed to extract /pr-installers/dockerman.tar.gz"
 
-        [ -f /pr-installers/luci-theme-privaterouter_*_all.ipk ] && opkg install /pr-installers/luci-theme-privaterouter_*_all.ipk || log_say "Failed to install /pr-installers/luci-theme-privaterouter_*_all.ipk"
         [ -f /pr-installers/luci-app-shortcutmenu_*_all.ipk ] && opkg install /pr-installers/luci-app-shortcutmenu_*_all.ipk || log_say "Failed to install /pr-installers/luci-app-shortcutmenu_*_all.ipk"
+
+        # Install PrivateRouter Theme and set it as active theme
+        [ -f /pr-installers/luci-theme-privaterouter_*_all.ipk ] && { 
+            opkg install /pr-installers/luci-theme-privaterouter_*_all.ipk 
+            uci set luci.main.mediaurlbase='/luci-static/privaterouter'
+            uci commit luci
+        } || { 
+            log_say "Failed to install /pr-installers/luci-theme-privaterouter_*_all.ipk" 
+        }
 } || {
         # No need to run setup script
         log_say "Directory /pr-installers does not exist"
