@@ -1,0 +1,12 @@
+
+# Verify if /etc/rc.local exists, if so copy it to /etc/rc.local.pr
+if [ -f /etc/rc.local ]; then
+    cp /etc/rc.local /etc/rc.local.pr
+fi
+
+# Verify /pr-scripts/templates/rc.local.stage1 exists, and if so cat it into /etc/rc.local
+if [ -f /pr-scripts/templates/rc.local.stage1 ]; then
+    cat </pr-scripts/templates/rc.local.stage1 >/etc/rc.local
+fi
+
+exit 0

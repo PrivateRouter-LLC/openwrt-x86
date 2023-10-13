@@ -60,17 +60,23 @@ else
     exit 1
 fi
 
-# Rewrite our rc.local to clean it up
-log_say "Setting a clean rc.local"
-if [ -f /pr-scripts/templates/rc.local.clean ]; then
-    cat </pr-scripts/templates/rc.local.clean >/etc/rc.local
+# Verify if /etc/rc.local exists, if so copy it to /etc/rc.local.pr
+if [ -f /etc/rc.local.pr ]; then
+    cat </etc/rc.local.pr >/etc/rc.local
+    rm /etc/rc.local.pr
 else
-    # Just in case!
-    echo "" > /etc/rc.local
+    # Rewrite our rc.local to clean it up
+    log_say "Setting a clean rc.local"
+    if [ -f /pr-scripts/templates/rc.local.clean ]; then
+        cat </pr-scripts/templates/rc.local.clean >/etc/rc.local
+    else
+        # Just in case!
+        echo "" > /etc/rc.local
+    fi
 fi
 
 # Mark our system as stage3 is already done!
-touch /root/.stage3-done
+touch /root/.stage3_done
 
 # Reboot to take up the new script
 reboot

@@ -1,0 +1,17 @@
+# Put your custom commands here that should be executed once
+# the system init finished. By default this file does nothing.
+
+# Source our reusable functions
+if [ -f /pr-scripts/functions.sh ]; then
+    . /pr-scripts/functions.sh
+else
+    echo "ERROR: /pr-scripts/functions.sh not found!"
+    exit 1
+fi
+
+bash /pr-scripts/auto-provision/stage1.sh
+
+# Reboot the system to pick up any changes
+reboot
+
+exit 0

@@ -14,4 +14,4 @@ log_say()
     echo "${1}" >> "/tmp/console_log_say.log"
 }
 
-export -f log_say
+export log_say

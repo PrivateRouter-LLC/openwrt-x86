@@ -23,16 +23,20 @@ fi
 # Print our PR Logo
 print_logo
 
-# Change our system hostname
-uci set system.@system[0].hostname='PrivateRouter'
-uci commit system
+# If you already have the file /etc/config/tgdocker then we assume you have already run the setup
+# If we run anything else again then we run the chance of overwriting a users configuration which we do not want to do
+if [ ! -f /etc/config/tgdocker ]; then
+    # Change our system hostname
+    uci set system.@system[0].hostname='PrivateRouter'
+    uci commit system
 
-# Set our PrivateRouter IP
-uci set network.lan.ipaddr='192.168.70.1'
-uci commit network
+    # Set our PrivateRouter IP
+    uci set network.lan.ipaddr='192.168.70.1'
+    uci commit network
 
-# Set our PrivateRouter default password
-set_root_password "torguard"
+    # Set our PrivateRouter default password
+    set_root_password "torguard"
+fi
 
 cat << EOF > /etc/rc.local
 # Put your custom commands here that should be executed once
@@ -43,6 +47,8 @@ sh /pr-scripts/auto-provision/stage2.sh
 
 exit 0
 EOF
+
+touch /root/.stage1_done
 
 reboot
 
