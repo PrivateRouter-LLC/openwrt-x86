@@ -245,7 +245,7 @@ cat << EOF > /etc/rc.local
 # the system init finished. By default this file does nothing.
 
 # Run Stage3 Script
-sh /pr-scripts/auto-provision/stage3.sh
+bash /pr-scripts/auto-provision/stage3.sh
 
 exit 0
 EOF

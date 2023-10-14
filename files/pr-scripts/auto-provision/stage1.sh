@@ -43,7 +43,7 @@ cat << EOF > /etc/rc.local
 # the system init finished. By default this file does nothing.
 
 # Run Stage2 Script
-sh /pr-scripts/auto-provision/stage2.sh
+bash /pr-scripts/auto-provision/stage2.sh
 
 exit 0
 EOF
