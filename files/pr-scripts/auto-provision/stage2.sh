@@ -8,6 +8,14 @@ else
     exit 1
 fi
 
+# If debug is set to 1, we will print out what we say
+DEBUG=1
+debug_say() {
+    if [ "$DEBUG" -eq 1 ]; then
+        log_say "$1"
+    fi
+}
+
 # Get the name of the script without the path
 SCRIPT_NAME=$(basename "$0")
 
@@ -19,6 +27,8 @@ if [ "$NUM_INSTANCES" -gt 1 ]; then
     log_say "${SCRIPT_NAME} is already running, exiting."
     exit 1
 fi
+
+debug_say "Starting ${SCRIPT_NAME}..."
 
 # Print our PR Logo
 print_logo
@@ -53,25 +63,13 @@ fi
 [ -f /etc/config/dockerd ] && mv /etc/config/dockerd /etc/config/dockerd.pr
 
 # List of our packages to install
-PACKAGE_LIST="docker dockerd docker-compose luci-app-dockerman attr avahi-dbus-daemon base-files busybox ca-bundle certtool cgi-io curl davfs2 dbus luci-app-uhttpd frpc luci-app-frpc kmod-rtl8xxxu rtl8188eu-firmware kmod-rtl8192ce kmod-rtl8192cu kmod-rtl8192de dcwapd jq bash git-http kmod-mwifiex-pcie kmod-mwifiex-sdio kmod-rtl8723bs kmod-rtlwifi kmod-rtlwifi-btcoexist kmod-rtlwifi-pci kmod-rtlwifi-usb kmod-wil6210 libuwifi kmod-8139cp kmod-8139too kmod-net-rtl8192su kmod-phy-realtek kmod-r8169 kmod-rtl8180 kmod-rtl8187 kmod-rtl8192c-common kmod-rtl8192se kmod-rtl8812au-ct kmod-rtl8821ae kmod-rtw88 kmod-sound-hda-codec-realtek kmod-switch-rtl8306 kmod-switch-rtl8366-smi kmod-switch-rtl8366rb kmod-switch-rtl8366s kmod-switch-rtl8367b kmod-usb-net-rtl8150 kmod-usb-net-rtl8152 librtlsdr r8169-firmware rtl-sdr rtl8192ce-firmware rtl8192cu-firmware rtl8192de-firmware rtl8192eu-firmware rtl8192se-firmware rtl8723au-firmware rtl8723bu-firmware rtl8821ae-firmware rtl8822be-firmware rtl8822ce-firmware rtl_433 kmod-mt76 kmod-mt76-connac kmod-mt76-core kmod-mt76-usb kmod-mt7603 kmod-mt7615-common kmod-mt7615-firmware kmod-mt7615e kmod-mt7663-firmware-ap kmod-mt7663-firmware-sta kmod-mt7663-usb-sdio kmod-mt7663s kmod-mt7663u kmod-mt76x0-common kmod-mt76x02-common kmod-mt76x02-usb kmod-mt76x0e kmod-mt76x0u kmod-mt76x2 kmod-mt76x2-common kmod-mt76x2u kmod-mt7915e kmod-ar5523 kmod-mt7921e mt7601u-firmware kmod-ath kmod-brcmutil kmod-libertas-sdio kmod-libertas-spi kmod-libertas-usb kmod-mt7601u iwlwifi-firmware-iwl100 iwlwifi-firmware-iwl1000 iwlwifi-firmware-iwl105 iwlwifi-firmware-iwl135 iwlwifi-firmware-iwl2000 iwlwifi-firmware-iwl2030 iwlwifi-firmware-iwl3160 iwlwifi-firmware-iwl3168 iwlwifi-firmware-iwl5000 iwlwifi-firmware-iwl5150 iwlwifi-firmware-iwl6000g2 iwlwifi-firmware-iwl6000g2a iwlwifi-firmware-iwl6000g2b iwlwifi-firmware-iwl6050 iwlwifi-firmware-iwl7260 iwlwifi-firmware-iwl7265 iwlwifi-firmware-iwl7265d iwlwifi-firmware-iwl8260c iwlwifi-firmware-iwl8265 iwlwifi-firmware-iwl9000 iwlwifi-firmware-iwl9260 kmod-iwlwifi luci-app-wifischedule dropbear firewall fstools fuse3-utils fwtool getrandom git glib2 gnupg hostapd-common ip-full ip6tables ipset iptables iptables-mod-ipopt iw iwinfo jshn adblock luci-app-adblock wwan jsonfilter kernel kmod-bluetooth kmod-btmrvl kmod-cfg80211 kmod-crypto-aead kmod-crypto-ccm kmod-crypto-cmac kmod-crypto-ctr kmod-crypto-ecb kmod-crypto-ecdh kmod-crypto-gcm kmod-crypto-gf128 kmod-usb-wdm kmod-usb-net-ipheth kmod-crypto-ghash kmod-crypto-hash kmod-crypto-hmac kmod-crypto-kpp kmod-crypto-lib-blake2s kmod-crypto-lib-chacha20 kmod-crypto-lib-chacha20poly1305 kmod-crypto-lib-curve25519 kmod-usb-net-asix-ax88179 kmod-crypto-lib-poly1305 kmod-crypto-manager kmod-crypto-null kmod-crypto-rng kmod-crypto-seqiv kmod-crypto-sha256 kmod-fuse kmod-gpio-button-hotplug kmod-hid kmod-input-core kmod-input-evdev kmod-ip6tables kmod-ipt-conntrack kmod-ipt-core kmod-ipt-ipopt kmod-ipt-ipset kmod-ipt-nat kmod-ipt-offload kmod-lib-crc-ccitt kmod-lib-crc16 kmod-mac80211 kmod-mmc luci-compat luci-lib-ipkg kmod-mwlwifi kmod-nf-conntrack kmod-nf-conntrack6 kmod-nf-flow kmod-nf-ipt kmod-nf-ipt6 kmod-nf-nat kmod-nf-reject kmod-nf-reject6 kmod-nfnetlink kmod-nls-base kmod-ppp kmod-pppoe kmod-pppox kmod-brcmfmac usbmuxd kmod-regmap-core kmod-slhc kmod-tun kmod-udptunnel4 kmod-udptunnel6 kmod-usb-core kmod-wireguard libatomic1 libattr libavahi-client libavahi-dbus-support libblkid1 libbpf0 libbz2-1.0 libc kmod-usb-net-rndis libcap libcurl4 libdaemon libdbus libelf1 libev libevdev libevent2-7 libexif libexpat libffi libffmpeg-mini libflac libfuse1 libfuse3-3 libgcc1 libgmp10 libgnutls libhttp-parser kmod-usb-net-cdc-ncm libid3tag libip4tc2 libip6tc2 libipset13 libiwinfo-data libiwinfo-lua libiwinfo20210430 libjpeg-turbo libjson-c5 liblua5.1.5 liblucihttp-lua liblucihttp0 liblzo2 libmbedtls12 libmnl0 luci-app-ttyd kmod-usb-net-cdc-eem libmount1 libncurses6 libneon libnettle8 libnftnl11 libnghttp2-14 libnl-tiny1 libogg0 libopenssl-conf libopenssl1.1 libowipcalc libpam libpcre libpopt0 libprotobuf-c libpthread libreadline8 kmod-usb-net-cdc-subset librt libsmartcols1 libsodium libsqlite3-0 libtasn1 libtirpc libubus-lua libuci-lua libuci20130104 libuclient20201210 libudev-zero liburing libusb-1.0-0 libustream-wolfssl20201210 libuuid1 kmod-usb-net-cdc-ether libvorbis libxml2 libxtables12 logd lua luci luci-app-attendedsysupgrade luci-app-firewall luci-app-minidlna luci-app-openvpn luci-app-opkg luci-app-samba4 kmod-usb-net-hso luci-app-wireguard luci-base luci-i18n-firewall-en kmod-usb2 kmod-usb3 luci-i18n-wireguard-en luci-lib-base luci-lib-ip luci-lib-jsonc luci-lib-nixio luci-mod-admin-full luci-mod-network luci-mod-status luci-mod-system luci-proto-ipv6 luci-proto-ppp luci-proto-wireguard luci-theme-bootstrap luci-theme-material luci-theme-openwrt-2020 minidlna mount-utils mtd mwifiex-sdio-firmware mwlwifi-firmware-88w8964 netifd odhcp6c odhcpd-ipv6only openssh-sftp-client openssh-sftp-server openssl-util openvpn-openssl openwrt-keyring opkg owipcalc ppp ppp-mod-pppoe procd procd-seccomp procd-ujail python3-base python3-email python3-light python3-logging python3-openssl python3-pysocks python3-urllib resolveip rpcd rpcd-mod-file rpcd-mod-iwinfo rpcd-mod-luci luci-app-statistics rpcd-mod-rpcsys rpcd-mod-rrdns rsync samba4-libs samba4-server nano sshfs terminfo ubi-utils luci-app-commands uboot-envtools ubox ubus ubusd uci uclient-fetch uhttpd uhttpd-mod-ubus urandom-seed urngd usbutils usign vpnbypass vpnc-scripts watchcat wg-installer-client wget-ssl wireguard-tools wireless-regdb wpad zlib kmod-usb-storage block-mount kmod-fs-ext4 kmod-fs-exfat e2fsprogs fdisk luci-app-nlbwmon luci-app-vnstat luci-app-fileassistant luci-app-plugsy"
+install_packages "attr avahi-dbus-daemon base-files busybox ca-bundle certtool cgi-io curl davfs2 dbus luci-app-uhttpd frpc luci-app-frpc kmod-rtl8xxxu rtl8188eu-firmware kmod-rtl8192ce kmod-rtl8192cu kmod-rtl8192de dcwapd jq bash git-http kmod-mwifiex-pcie kmod-mwifiex-sdio kmod-rtl8723bs kmod-rtlwifi kmod-rtlwifi-btcoexist kmod-rtlwifi-pci kmod-rtlwifi-usb kmod-wil6210 libuwifi kmod-8139cp kmod-8139too kmod-net-rtl8192su kmod-phy-realtek kmod-r8169 kmod-rtl8180 kmod-rtl8187 kmod-rtl8192c-common kmod-rtl8192se kmod-rtl8812au-ct kmod-rtl8821ae kmod-rtw88 kmod-sound-hda-codec-realtek kmod-switch-rtl8306 kmod-switch-rtl8366-smi kmod-switch-rtl8366rb kmod-switch-rtl8366s kmod-switch-rtl8367b kmod-usb-net-rtl8150 kmod-usb-net-rtl8152 librtlsdr r8169-firmware rtl-sdr rtl8192ce-firmware rtl8192cu-firmware rtl8192de-firmware rtl8192eu-firmware rtl8192se-firmware rtl8723au-firmware rtl8723bu-firmware rtl8821ae-firmware rtl8822be-firmware rtl8822ce-firmware rtl_433 kmod-mt76 kmod-mt76-connac kmod-mt76-core kmod-mt76-usb kmod-mt7603 kmod-mt7615-common kmod-mt7615-firmware kmod-mt7615e kmod-mt7663-firmware-ap kmod-mt7663-firmware-sta kmod-mt7663-usb-sdio kmod-mt7663s kmod-mt7663u kmod-mt76x0-common kmod-mt76x02-common kmod-mt76x02-usb kmod-mt76x0e kmod-mt76x0u kmod-mt76x2 kmod-mt76x2-common kmod-mt76x2u kmod-mt7915e kmod-ar5523"
+install_packages "kmod-mt7921e mt7601u-firmware kmod-ath kmod-brcmutil kmod-libertas-sdio kmod-libertas-spi kmod-libertas-usb kmod-mt7601u iwlwifi-firmware-iwl100 iwlwifi-firmware-iwl1000 iwlwifi-firmware-iwl105 iwlwifi-firmware-iwl135 iwlwifi-firmware-iwl2000 iwlwifi-firmware-iwl2030 iwlwifi-firmware-iwl3160 iwlwifi-firmware-iwl3168 iwlwifi-firmware-iwl5000 iwlwifi-firmware-iwl5150 iwlwifi-firmware-iwl6000g2 iwlwifi-firmware-iwl6000g2a iwlwifi-firmware-iwl6000g2b iwlwifi-firmware-iwl6050 iwlwifi-firmware-iwl7260 iwlwifi-firmware-iwl7265 iwlwifi-firmware-iwl7265d iwlwifi-firmware-iwl8260c iwlwifi-firmware-iwl8265 iwlwifi-firmware-iwl9000 iwlwifi-firmware-iwl9260 kmod-iwlwifi luci-app-wifischedule dropbear firewall fstools fuse3-utils fwtool getrandom git glib2 gnupg hostapd-common ip-full ip6tables ipset iptables iptables-mod-ipopt iw iwinfo jshn adblock luci-app-adblock wwan jsonfilter kernel kmod-bluetooth kmod-btmrvl kmod-cfg80211 kmod-crypto-aead kmod-crypto-ccm kmod-crypto-cmac kmod-crypto-ctr kmod-crypto-ecb kmod-crypto-ecdh kmod-crypto-gcm kmod-crypto-gf128 kmod-usb-wdm kmod-usb-net-ipheth kmod-crypto-ghash kmod-crypto-hash kmod-crypto-hmac kmod-crypto-kpp kmod-crypto-lib-blake2s kmod-crypto-lib-chacha20 kmod-crypto-lib-chacha20poly1305 kmod-crypto-lib-curve25519 kmod-usb-net-asix-ax88179 kmod-crypto-lib-poly1305 kmod-crypto-manager kmod-crypto-null kmod-crypto-rng"
+install_packages "kmod-crypto-seqiv kmod-crypto-sha256 kmod-fuse kmod-gpio-button-hotplug kmod-hid kmod-input-core kmod-input-evdev kmod-ip6tables kmod-ipt-conntrack kmod-ipt-core kmod-ipt-ipopt kmod-ipt-ipset kmod-ipt-nat kmod-ipt-offload kmod-lib-crc-ccitt kmod-lib-crc16 kmod-mac80211 kmod-mmc luci-compat luci-lib-ipkg kmod-mwlwifi kmod-nf-conntrack kmod-nf-conntrack6 kmod-nf-flow kmod-nf-ipt kmod-nf-ipt6 kmod-nf-nat kmod-nf-reject kmod-nf-reject6 kmod-nfnetlink kmod-nls-base kmod-ppp kmod-pppoe kmod-pppox kmod-brcmfmac usbmuxd kmod-regmap-core kmod-slhc kmod-tun kmod-udptunnel4 kmod-udptunnel6 kmod-usb-core kmod-wireguard libatomic1 libattr libavahi-client libavahi-dbus-support libblkid1 libbpf0 libbz2-1.0 libc kmod-usb-net-rndis libcap libcurl4 libdaemon libdbus libelf1 libev libevdev libevent2-7 libexif libexpat libffi libffmpeg-mini libflac libfuse1 libfuse3-3 libgcc1 libgmp10 libgnutls libhttp-parser kmod-usb-net-cdc-ncm libid3tag libip4tc2 libip6tc2 libipset13 libiwinfo-data libiwinfo-lua libiwinfo20210430 libjpeg-turbo libjson-c5 liblua5.1.5 liblucihttp-lua liblucihttp0 liblzo2 libmbedtls12 libmnl0 luci-app-ttyd kmod-usb-net-cdc-eem libmount1 libncurses6 libneon libnettle8 libnftnl11 libnghttp2-14 libnl-tiny1 libogg0 libopenssl-conf libopenssl1.1 libowipcalc libpam libpcre libpopt0 libprotobuf-c libpthread libreadline8 kmod-usb-net-cdc-subset librt libsmartcols1"
+install_packages "libsodium libsqlite3-0 libtasn1 libtirpc libubus-lua libuci-lua libuci20130104 libuclient20201210 libudev-zero liburing libusb-1.0-0 libustream-wolfssl20201210 libuuid1 kmod-usb-net-cdc-ether libvorbis libxml2 libxtables12 logd lua luci luci-app-attendedsysupgrade luci-app-firewall luci-app-minidlna luci-app-openvpn luci-app-opkg luci-app-samba4 kmod-usb-net-hso luci-app-wireguard luci-base luci-i18n-firewall-en kmod-usb2 kmod-usb3 luci-i18n-wireguard-en luci-lib-base luci-lib-ip luci-lib-jsonc luci-lib-nixio luci-mod-admin-full luci-mod-network luci-mod-status luci-mod-system luci-proto-ipv6 luci-proto-ppp luci-proto-wireguard luci-theme-bootstrap luci-theme-material luci-theme-openwrt-2020 minidlna mount-utils mtd mwifiex-sdio-firmware mwlwifi-firmware-88w8964 netifd odhcp6c odhcpd-ipv6only openssh-sftp-client openssh-sftp-server openssl-util openvpn-openssl openwrt-keyring opkg owipcalc ppp ppp-mod-pppoe procd procd-seccomp procd-ujail python3-base python3-email python3-light python3-logging python3-openssl python3-pysocks python3-urllib resolveip rpcd rpcd-mod-file rpcd-mod-iwinfo rpcd-mod-luci luci-app-statistics rpcd-mod-rpcsys rpcd-mod-rrdns rsync samba4-libs samba4-server nano sshfs terminfo ubi-utils luci-app-commands uboot-envtools ubox ubus ubusd uci uclient-fetch uhttpd uhttpd-mod-ubus urandom-seed urngd usbutils usign vpnbypass vpnc-scripts watchcat"
+install_packages "wg-installer-client wget-ssl wireguard-tools wireless-regdb wpad zlib kmod-usb-storage block-mount kmod-fs-ext4 kmod-fs-exfat e2fsprogs fdisk luci-app-nlbwmon luci-app-vnstat luci-app-fileassistant luci-app-plugsy"
 
-count=$(echo "$PACKAGE_LIST" | wc -w)
-log_say "Packages to install: ${count}"
-
-for package in $PACKAGE_LIST; do
-    if ! opkg list-installed | grep -q "^$package -"; then
-        log_say "Installing $package..."
-        # use --force-maintainer to preserve the existing config
-        opkg install --force-maintainer $package
-        if [ $? -eq 0 ]; then
-            log_say "$package installed successfully."
-        else
-            log_say "Failed to install $package."
-        fi
-    else
-        log_say "$package is already installed."
-    fi
-done
+debug_say "Fix dockerd config"
 
 # If we have a backed up dockerd config, restore it
 if [ -f /etc/config/dockerd.pr ]; then
@@ -79,6 +77,14 @@ if [ -f /etc/config/dockerd.pr ]; then
     [ -f /etc/config/dockerd ] && mv /etc/config/dockerd /etc/config/dockerd.bk
     mv /etc/config/dockerd.pr /etc/config/dockerd
 fi
+
+debug_say "Fix Docker Partition"
+
+# Check if docker has been mounted to /opt/docker2, if so stop dockerd and move forward
+# if mount | grep "overlayfs:/overlay.*on /opt/docker2 "; then
+#     /etc/init.d/dockerd stop
+#     mv /opt/docker2 /opt/docker-bak
+# fi
 
 ########################## FIX DOCKER PARTITION ##########################
 # Check if we have a /opt/docker2 partition mounted, if not, create one
@@ -116,36 +122,52 @@ fi
         DO_PARTITION=0
     fi
 
+    debug_say "DO_PARTITION: $DO_PARTITION"
+
     # If we should create the partition, do so
     if [ "$DO_PARTITION" -eq 1 ]; then
 
+        debug_say "Do fdisk"
+
         #Create our new partition for docker
         echo -e "n\n\n\n\nw" | fdisk $BOOT_DEVICE
+        if [ $? -eq 0 ]; then #BEGIN PARTITION SUCCESS CHECK
+            # Find our newest partition added
+            NEW_PARTITION=$(fdisk -l $BOOT_DEVICE | awk -v device="$BOOT_DEVICE" '$0 ~ device && $0 !~ "BIOS boot" && $1 ~ device {part=$1} END {print part}')
 
-        # Find our newest partition added
-        NEW_PARTITION=$(fdisk -l $BOOT_DEVICE | awk -v device="$BOOT_DEVICE" '$0 ~ device && $0 !~ "BIOS boot" && $1 ~ device {part=$1} END {print part}')
+            debug_say "NEW_PARTITION: $NEW_PARTITION"
 
-        # Create our ext4 partition for docker
-        yes | mkfs.ext4 $NEW_PARTITION
+            # Create our ext4 partition for docker
+            yes | mkfs.ext4 $NEW_PARTITION
 
-        # Create our mountpoint if it does not exist
-        [ ! -d /opt/docker2 ] && { mkdir -p /opt/docker2; }
+            # Create our mountpoint if it does not exist
+            [ ! -d /opt/docker2 ] && { mkdir -p /opt/docker2; }
 
-        # Set the mountpoint in uci
-        uci set fstab.@mount[-1].target='/opt/docker2'
-        uci set fstab.@mount[-1].device="$NEW_PARTITION"
-        uci set fstab.@mount[-1].fstype='ext4'
-        uci set fstab.@mount[-1].enabled='1'
-        uci set fstab.@mount[-1].enabled_fsck='0'
-        uci commit fstab
+            debug_say "Mount our new partition"
 
-        # Mount our new partition
-        mount -t ext4 "${NEW_PARTITION}" /opt/docker2
+            # Set the mountpoint in uci
+            uci set fstab.@mount[-1].target='/opt/docker2'
+            uci set fstab.@mount[-1].device="$NEW_PARTITION"
+            uci set fstab.@mount[-1].fstype='ext4'
+            uci set fstab.@mount[-1].enabled='1'
+            uci set fstab.@mount[-1].enabled_fsck='0'
+            uci commit fstab
+
+            # Mount our new partition
+            mount -t ext4 "${NEW_PARTITION}" /opt/docker2
+        else
+            log_say "Failed to create the /opt/docker2 partition."
+        fi #END PARTITION SUCCESS CHECK
     else
         log_say "We did not create the /opt/docker2 partition as there was not enough space free on the boot disk"
     fi
 }
 ########################## END FIX DOCKER PARTITION ##########################
+
+log_say "Installing Docker packages"
+install_packages "docker dockerd docker-compose luci-app-dockerman"
+
+debug_say "Fix Docker Config"
 
 # Fix our docker daemon config to use proper partition
 [ -f /etc/config/dockerd ] && {
@@ -157,6 +179,8 @@ fi
 
     # Remove the comment from the extra_iptables_args line
     sed -i '/^#\s*option extra_iptables_args/s/^#//' /etc/config/dockerd
+
+    debug_say "Move /opt/docker to /opt/docker2 if needed"
 
     # Check if /opt/docker exists, if so, move it to /opt/docker2
     # Also checks first if /opt/docker is a symbolic link
@@ -183,6 +207,8 @@ if ! opkg list-installed | grep -q "^luci-app-v2ray "; then
     fi
 fi 
 
+debug_say "Wireless fix"
+
 # Check if UCI has any wireless configuration
 if uci show wireless > /dev/null 2>&1 && [ $CLEAN_INSTALL -eq 1 ]; then
     # Configure our PrivateRouter Wireless
@@ -203,41 +229,43 @@ if uci show wireless > /dev/null 2>&1 && [ $CLEAN_INSTALL -eq 1 ]; then
     wifi up radio0
 fi
 
+debug_say "OpenVPN config copy"
+
 # Check if we have /etc/config/openvpn and if we do, echo the contents of /pr-scripts/config/openvpn into it
 if [ -f /etc/config/openvpn ] && [ $CLEAN_INSTALL -eq 1 ]; then
     cat </pr-scripts/config/openvpn >/etc/config/openvpn
 fi
 
 # Install our theme, logo and dockerman
-[ -d /pr-installers ] && {
-        #Install Argon Tankman theme
-        log_say "Installing custom Argon"
-        [ -f /pr-installers/luci-theme-argon*.ipk ] && opkg install /pr-installers/luci-theme-argon*.ipk || log_say "Failed to install luci-theme-argon*.ipk"
-        [ -f /pr-installers/luci-app-argon*.ipk ] && opkg install /pr-installers/luci-app-argon*.ipk || log_say "Failed to install /pr-installers/luci-app-argon*.ipk"
+log_say "Installing Argon theme, logo and packages"
+install_packages "luci-theme-argon luci-app-argon luci-app-shortcutmenu"
 
-        [ -f /pr-installers/logo.tar.gz ] && tar xzvf /pr-installers/logo.tar.gz -C /www/luci-static/argon/  || log_say "Failed to extract /pr-installers/logo.tar.gz"
-        [ -f /pr-installers/dockerman.tar.gz ] && tar xzvf /pr-installers/dockerman.tar.gz -C /usr/lib/lua/luci/model/cbi/dockerman/  || log_say "Failed to extract /pr-installers/dockerman.tar.gz"
+[ -f /pr-installers/logo.tar.gz ] && tar xzvf /pr-installers/logo.tar.gz -C /www/luci-static/argon/  || log_say "Failed to extract /pr-installers/logo.tar.gz"
+[ -f /pr-installers/dockerman.tar.gz ] && tar xzvf /pr-installers/dockerman.tar.gz -C /usr/lib/lua/luci/model/cbi/dockerman/  || log_say "Failed to extract /pr-installers/dockerman.tar.gz"
 
-        [ -f /pr-installers/luci-app-shortcutmenu_*_all.ipk ] && opkg install /pr-installers/luci-app-shortcutmenu_*_all.ipk || log_say "Failed to install /pr-installers/luci-app-shortcutmenu_*_all.ipk"
-
-        # Install PrivateRouter Theme and set it as active theme
-        [ -f /pr-installers/luci-theme-privaterouter_*_all.ipk ] && { 
-            opkg install /pr-installers/luci-theme-privaterouter_*_all.ipk 
-            uci set luci.main.mediaurlbase='/luci-static/privaterouter'
-            uci commit luci
-        } || { 
-            log_say "Failed to install /pr-installers/luci-theme-privaterouter_*_all.ipk" 
-        }
-} || {
-        # No need to run setup script
-        log_say "Directory /pr-installers does not exist"
+log_say "Install PrivateRouter Theme"
+install_packages "luci-theme-privaterouter luci-mod-dashboard"
+# Make sure theme installed ok, if so set it default
+$(opkg list-installed | grep -q "^luci-theme-privaterouter") && {
+    # Fix the CSS for the dashboard
+    log_say "Fixing the CSS for the dashboard"
+    [ ! -d /www/luci-static/resources/view/dashboard/css ] && mkdir -p /www/luci-static/resources/view/dashboard/css
+    #curl -o /www/luci-static/resources/view/dashboard/css/custom.css https://gist.githubusercontent.com/FixedBit/36327dd57f769f43c7058212a42ff65e/raw/d07d5ab89b27a62651871a4cc9fb7710445493d7/gistfile1.txt 
+    # Set it as the default theme
+    log_say "Setting the PrivateRouter theme as the default"
+    uci set luci.main.mediaurlbase='/luci-static/privaterouter'
+    uci commit luci
 }
+
+debug_say "Copy over our openvpn templates"
 
 # If we need to copy over our openvpn templates, do so
 if [ -d /pr-scripts/templates/openvpn ] && [ $CLEAN_INSTALL -eq 1 ]; then
     log_say "Copying over TorGuard OpenVPN templates"
     cp -r /pr-scripts/templates/openvpn/* /etc/openvpn
 fi
+
+debug_say "Write stage3 to rc.local"
 
 # Rewrite our rc.local to run our stage3 script
 cat << EOF > /etc/rc.local

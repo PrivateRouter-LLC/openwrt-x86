@@ -11,82 +11,6 @@ DATA_UUID=05d615b3-bef8-460c-9a23-52db8d09e001
 
 echo Board name is [$(board_name)]
 
-# let's attempt to define some defaults...
-LED_USB="green:usb"
-LED_STATUS="green:qss"
-LED_WAN="green:wan"
-
-# CUSTOMIZE
-case $(board_name) in
-    *gl-xe300*)
-        LED_USB="green:lte"
-        LED_STATUS="green:lan"
-        LED_WAN="green:wan"
-        ;;
-esac
-
-# Set physical LED attributes
-set_led_attribute()
-{
-    [ -f "/sys/class/leds/$1/$2" ] && echo "$3" > "/sys/class/leds/$1/$2"
-}
-
-# # Set LED attributes waiting for USB Drive
-# led_signal_waiting_for_drive()
-# {
-#     set_led_attribute ${LED_USB} trigger none
-#     set_led_attribute ${LED_USB} trigger timer
-#     set_led_attribute ${LED_USB} delay_on 200
-#     set_led_attribute ${LED_USB} delay_off 300
-# }
-
-led_signal_waiting_for_net()
-{
-    set_led_attribute ${LED_WAN} trigger none
-    set_led_attribute ${LED_WAN} trigger timer
-    set_led_attribute ${LED_WAN} delay_on 200
-    set_led_attribute ${LED_WAN} delay_off 300
-}
-
-led_signal_autoprovision_working()
-{
-    set_led_attribute ${LED_STATUS} trigger none
-    set_led_attribute ${LED_STATUS} trigger timer
-    set_led_attribute ${LED_STATUS} delay_on 2000
-    set_led_attribute ${LED_STATUS} delay_off 2000
-}
-
-led_signal_autoprovision_waiting_on_user()
-{
-    set_led_attribute ${LED_STATUS} trigger none
-    set_led_attribute ${LED_STATUS} trigger timer
-    set_led_attribute ${LED_STATUS} delay_on 200
-    set_led_attribute ${LED_STATUS} delay_off 300
-}
-
-led_signal_waiting_for_drive()
-{
-    set_led_attribute ${LED_USB} trigger none
-    set_led_attribute ${LED_USB} trigger timer
-    set_led_attribute ${LED_USB} delay_on 200
-    set_led_attribute ${LED_USB} delay_off 300
-}
-
-led_signal_formatting()
-{
-    set_led_attribute ${LED_USB} trigger none
-    set_led_attribute ${LED_USB} trigger timer
-    set_led_attribute ${LED_USB} delay_on 1000
-    set_led_attribute ${LED_USB} delay_off 1000
-}
-
-led_stop_signaling()
-{
-    set_led_attribute ${LED_STATUS} trigger none
-    set_led_attribute ${LED_USB} trigger none
-    set_led_attribute ${LED_WAN} trigger none
-}
-
 # Log to the system log and echo if needed
 log_say()
 {
@@ -94,6 +18,29 @@ log_say()
     echo "${SCRIPT_NAME}: ${1}"
     logger "${SCRIPT_NAME}: ${1}"
     echo "${SCRIPT_NAME}: ${1}" >> "/tmp/${SCRIPT_NAME}.log"
+}
+
+# Easily install packages in a space delimited list
+install_packages() {
+    # Install packages
+    log_say "Installing packages: ${1}"
+    local count=$(echo "${1}" | wc -w)
+    log_say "Packages to install: ${count}"
+
+    for package in ${1}; do
+        if ! opkg list-installed | grep -q "^$package -"; then
+            log_say "Installing $package..."
+            # use --force-maintainer to preserve the existing config
+            opkg install --force-maintainer $package
+            if [ $? -eq 0 ]; then
+                log_say "$package installed successfully."
+            else
+                log_say "Failed to install $package."
+            fi
+        else
+            log_say "$package is already installed."
+        fi
+    done
 }
 
 # Command to check if a command ran successfully
