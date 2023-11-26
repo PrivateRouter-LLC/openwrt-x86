@@ -40,14 +40,7 @@ wait_for_internet() {
 
 # Wait for Internet connection
 wait_for_internet
-## INSTALL MESH  ##
-    log_say "Installing Mesh Packages..."
-    opkg install tgrouterappstore luci-app-shortcutmenu luci-app-poweroff luci-app-wizard luci-app-openwisp
-    opkg remove wpad-basic wpad-basic-openssl wpad-basic-wolfssl wpad-wolfssl openwisp-monitoring openwisp-config
-    opkg install wpad-mesh-openssl kmod-batman-adv batctl avahi-autoipd batctl-full luci-app-dawn
-    opkg install /etc/luci-app-easymesh_2.4_all.ipk
-    opkg install /etc/luci-proto-batman-adv_git-22.104.47289-0a762fd_all.ipk
-# Command to wait for opkg to finish
+
 wait_for_opkg() {
   while pgrep -x opkg >/dev/null; do
     log_say "Waiting for opkg to finish..."
@@ -63,14 +56,35 @@ wait_for_opkg
 [ -d /etc/auto-provision ] && rm -rf /etc/auto-provision
 [ -f /etc/rc.local ] && echo "# Empty by design" > /etc/rc.local
 
+# If nothing is set for REPO we set it to main
+if [ -z "${REPO}" ]; then
+    REPO="main"
+fi
+
+HASH_STORE="/etc/config/.script-repo"
+CURRENT_HASH=$(
+    curl \
+        --silent "https://api.github.com/repos/PrivateRouter-LLC/script-repo/commits/${REPO}" | \
+        jq --raw-output '.sha'
+)
+
+# Set our current repo hash to the hash we just got
+echo "${CURRENT_HASH}" > "${HASH_STORE}"
+
 # Download our startup.tar.gz with our startup scripts and load them in
 log_say "Downloading startup.tar.gz"
-wget -q -O /tmp/startup.tar.gz https://github.com/PrivateRouter-LLC/script-repo/raw/main/startup-scripts/startup.tar.gz
-log_say "Extracting startup.tar.gz"
-tar -xzf /tmp/startup.tar.gz -C /etc
-
-#copy dashboard css
-cp -f /etc/custom.css /www/luci-static/resources/view/dashboard/css/custom.css
+wget -q -O /tmp/startup.tar.gz "https://github.com/PrivateRouter-LLC/script-repo/raw/${REPO}/startup-scripts/startup.tar.gz"
+# Verify it downloaded successfully
+if [ $? -eq 0 ]; then
+    log_say "Extracting startup.tar.gz"
+    tar -xzf /tmp/startup.tar.gz -C /etc
+    rm /tmp/startup.tar.gz
+else
+    # We did not download our startup, and we NEED TO!
+    log_say "We have to reboot because we did not download our startup script successfully!"
+    reboot
+    exit 1
+fi
 
 # Install LXC and related packages
 PACKAGES="lxc lxc-attach lxc-auto lxc-autostart lxc-cgroup lxc-checkconfig lxc-common lxc-config lxc-configs lxc-console lxc-copy lxc-create lxc-destroy lxc-device lxc-execute lxc-freeze lxc-hooks lxc-info lxc-init lxc-ls lxc-monitor lxc-monitord lxc-snapshot lxc-start lxc-stop lxc-templates lxc-top lxc-unfreeze lxc-unprivileged lxc-unshare lxc-user-nic lxc-usernsexec lxc-wait liblxc luci-app-lxc luci-i18n-lxc-en rpcd-mod-lxc"
@@ -191,27 +205,6 @@ boot() {
 	start
 }
 EOL
-#More packages
-opkg remove tgsstp
-opkg remove tgopenvpn
-opkg remove tganyconnect
-opkg remove luci-app-shortcutmenu
-opkg remove luci-app-webtop
-opkg remove luci-app-nextcloud
-opkg remove luci-app-seafile
-
-opkg install luci-app-fileassistant
-opkg install luci-app-plugsy
-opkg install /etc/luci-app-megamedia_git-23.251.42088-cdbc3cb_all.ipk
-opkg install /etc/luci-app-webtop_git-23.251.39494-1b8885d_all.ipk
-opkg install /etc/luci-app-shortcutmenu_git-23.251.38707-d0c2502_all.ipk
-opkg install /etc/tgsstp_git-23.251.15457-c428b60_all.ipk
-opkg install /etc/tganyconnect_git-23.251.15499-9fafcfe_all.ipk
-opkg install /etc/tgopenvpn_git-23.251.15416-16e4649_all.ipk
-opkg install /etc/luci-app-seafile_git-23.251.23441-a760a47_all.ipk
-opkg install /etc/luci-app-nextcloud_git-23.251.23529-ee6a72e_all.ipk
-opkg install /etc/luci-app-whoogle_git-23.250.10284-cdadc0b_all.ipk
-opkg install /etc/luci-theme-privaterouter_0.3.1-8_all.ipk
 
 log_say "Removing our script before reboot"
 rm -- "$0"

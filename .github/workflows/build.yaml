@@ -2,8 +2,7 @@ name: Build OpenWRT Images
 on:
   push:
     branches:
-      - main
-      - testing
+      - '*'
 
 jobs:
     build:
@@ -11,12 +10,23 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
+            - name: Free Disk Space (Ubuntu)
+              uses: jlumbroso/free-disk-space@main
+              with:
+                tool-cache: false
+                android: true
+                dotnet: true
+                haskell: true
+                large-packages: true
+                docker-images: true
+                swap-storage: true
+
             - name: Checkout
               uses: actions/checkout@v2
               
-            - name: Check PRERELEASE - set our REPO variable in the build
-              if: github.ref == 'refs/heads/testing'
-              run: sed -i 's/^REPO=main$/REPO=testing/' files/root/.profile
+            - name: Update REPO variable in .profile if branch is not main
+              if: github.ref != 'refs/heads/main'
+              run: sed -i "s/^REPO=main\$/REPO=${GITHUB_REF#refs/heads/}/" files/root/.profile
 
             - name: Build target images
               run: |
@@ -62,11 +72,11 @@ jobs:
                 files: images/*
 
             - name: Create a release (branch testing)
-              if: github.ref == 'refs/heads/testing'
+              if: github.ref != 'refs/heads/main'
               uses: "marvinpinto/action-automatic-releases@latest"
               with:
                 repo_token: "${{ secrets.GITHUB_TOKEN }}"
                 prerelease: true
-                title: "TESTING BUILD OpenWRT PrivateRouter SHA ${{ env.GITHUB_SHA_SHORT }}"
+                title: "Test OpenWRT PrivateRouter SHA ${{ env.GITHUB_SHA_SHORT }}"
                 automatic_release_tag: "TESTING-OpenWRT-PrivateRouter-${{ env.GITHUB_SHA_SHORT }}"
                 files: images/*
